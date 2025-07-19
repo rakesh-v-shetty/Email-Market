@@ -25,10 +25,12 @@ from urllib.parse import urlparse
 
 app = Flask(__name__)
 
-# --- Configuration for Deployment ---
+# --- Configuration for Render Deployment ---
 PORT = int(os.environ.get("PORT", 5000))
-# Railway provides a public domain, which we will set as BASE_URL in the environment variables
-BASE_URL = os.environ.get("BASE_URL", f"http://localhost:{PORT}")
+if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
+    BASE_URL = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}"
+else:
+    BASE_URL = f"http://localhost:{PORT}"
 
 print(f"Application will use BASE_URL: {BASE_URL}")
 
