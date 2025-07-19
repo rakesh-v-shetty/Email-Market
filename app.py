@@ -39,13 +39,13 @@ print(f"Application will use BASE_URL: {BASE_URL}")
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_db_connection():
+    """Establishes a connection to the PostgreSQL database using a connection URL."""
     if not DATABASE_URL:
-        # For local development, if you want to use a local PostgreSQL without Render's DATABASE_URL:
-        # You would replace this with your local PostgreSQL connection details
-        print("DATABASE_URL environment variable not set. Please set it for production deployment.")
-        # As a fallback for local testing without setting DATABASE_URL, you could provide static credentials
-        # Or, raise an error to force setting the variable.
         raise ValueError("DATABASE_URL environment variable is not set. Cannot connect to PostgreSQL.")
+
+    # Use the DATABASE_URL directly. psycopg2 can parse it automatically.
+    conn = psycopg2.connect(DATABASE_URL)
+    return conn
 
     # Parse the DATABASE_URL provided by Render (e.g., postgresql://user:password@host:port/database)
     result = urlparse(DATABASE_URL)
